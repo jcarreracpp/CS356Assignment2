@@ -8,8 +8,6 @@
  *
  * @author Jorge
  */
-public class Driver {
-    public static void main(String[] args) {
-        
-    }
+class User {
+    
 }

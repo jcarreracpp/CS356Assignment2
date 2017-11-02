@@ -8,8 +8,13 @@
  *
  * @author Jorge
  */
-public class Driver {
-    public static void main(String[] args) {
-        
-    }
+public interface UserHusk {
+    
+    public void subscribeFollower(User us);
+    
+    public void unsubscribeFollower();
+    
+    public void notifyFollowers(User us);
+    
+    public void notifyFollowers();
 }
