@@ -3,7 +3,7 @@
  *
  * @author Jorge
  */
-public interface UserHusk extends ClientHusk{
+public interface ClientHusk {
     
     public void subscribeFollower(User us);
         
