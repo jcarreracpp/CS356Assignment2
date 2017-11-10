@@ -51,4 +51,16 @@ public class PButton extends JButton{
         setActionCommand("userView");
         return this;
     }
+    
+    public PButton followUser(){
+        setText("Follow User");
+        setActionCommand("follow");
+        return this;
+    }
+    
+    public PButton sendMessage(){
+        setText("Send Message");
+        setActionCommand("sendMsg");
+        return this;
+    }
 }

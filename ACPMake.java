@@ -117,5 +117,21 @@ public class ACPMake implements ActionListener{
             System.out.println("\t"+acp.sendGroupIDInput().getText());
             acp.setGroupIDInput("");
         }
+        if(e.getActionCommand().equals("userView")){
+            User us = new User();
+            us.accept(new PanelMakeVisitor());
+        }
+        if(e.getActionCommand().equals("userCount")){
+            System.out.println("\t"+acp.sendTotalUsers());
+        }
+        if(e.getActionCommand().equals("groupCount")){
+            System.out.println("\t"+acp.sendTotalGroups());
+        }
+        if(e.getActionCommand().equals("messageCount")){
+            System.out.println("\t"+acp.sendTotalUsers());
+        }
+        if(e.getActionCommand().equals("positivePercent")){
+            System.out.println("\t"+acp.sendTotalGroups());
+        }
     }
 }

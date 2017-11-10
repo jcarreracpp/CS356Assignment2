@@ -17,7 +17,7 @@ public class PanelMakeVisitor implements PanelVisitor{
 
     @Override
     public void visit(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        new UCPMake(user);
     }
     
 }

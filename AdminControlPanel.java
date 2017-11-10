@@ -59,6 +59,22 @@ public class AdminControlPanel{
         return groupIDInput;
     }
     
+    public int sendTotalUsers(){
+        return totalUsers;
+    }
+    
+    public int sendTotalGroups(){
+        return totalGroups;
+    }
+    
+    public int sentTotalMessages(){
+        return totalMessages;
+    }
+    
+    public float sendPercentPositMsg(){
+        return percentPositMsg;
+    }
+    
     public void setAllGroupsAndUsers(JTree jtree){
         allGroupsAndUsers = jtree;
     }
@@ -70,4 +86,5 @@ public class AdminControlPanel{
     public void setGroupIDInput(String str){
         groupIDInput.setText(str);
     }
+    
 }
