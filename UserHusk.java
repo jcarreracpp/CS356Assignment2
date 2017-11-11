@@ -5,9 +5,9 @@
  */
 public interface UserHusk extends ClientHusk{
     
-    public void subscribeFollower(User us);
-        
-    public void notifyFollowers(User us);
-    
-    public void notifyFollowers();
+    @Override
+    public void subscribeTo(ClientHusk ch);
+  
+    @Override
+    public void notifyFollowers(String str);
 }

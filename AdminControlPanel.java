@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -25,7 +26,7 @@ public class AdminControlPanel{
     private int totalGroups = 0;
     private int totalMessages = 0;
     private float percentPositMsg = 0;
-    private JTree allGroupsAndUsers;
+    private JList allGroupsAndUsers;
     private JTextField userIDInput = new JTextField();
     private JTextField groupIDInput = new JTextField();
 
@@ -47,7 +48,7 @@ public class AdminControlPanel{
         pmv.visit(this);
     }
 
-    public JTree sendAllGroupsAndUsers(){
+    public JList sendAllGroupsAndUsers(){
         return allGroupsAndUsers;
     }
     
@@ -75,8 +76,8 @@ public class AdminControlPanel{
         return percentPositMsg;
     }
     
-    public void setAllGroupsAndUsers(JTree jtree){
-        allGroupsAndUsers = jtree;
+    public void setAllGroupsAndUsers(JList jlist){
+        allGroupsAndUsers = jlist;
     }
     
     public void setUserIDInput(String str){

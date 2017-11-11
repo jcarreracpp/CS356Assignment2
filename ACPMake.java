@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -22,6 +24,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class ACPMake implements ActionListener{
     private AdminControlPanel acp = null;
+    private DefaultListModel<User> userBacklog = new DefaultListModel<>();
+    private DefaultListModel<String> userNames = new DefaultListModel<>();
+    private JList<String> allList;
     
     public ACPMake(AdminControlPanel acp){
         if(this.acp == null){
@@ -56,8 +61,10 @@ public class ACPMake implements ActionListener{
     }
     
     private JScrollPane treeGen() {
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode("Root");
-        acp.setAllGroupsAndUsers(new JTree(top));
+        userBacklog.add(0, new User("Root"));
+        userNames.add(0, userBacklog.get(0).sendName());
+        allList = new JList(userNames);
+        acp.setAllGroupsAndUsers(allList);
         JScrollPane heirViewer = new JScrollPane(acp.sendAllGroupsAndUsers());
         return heirViewer;
     }
@@ -118,8 +125,11 @@ public class ACPMake implements ActionListener{
             acp.setGroupIDInput("");
         }
         if(e.getActionCommand().equals("userView")){
-            User us = new User();
-            us.accept(new PanelMakeVisitor());
+            if(!allList.isSelectionEmpty()){
+                userBacklog.getElementAt(allList.getSelectedIndex()).accept(new PanelMakeVisitor());
+            }
+            //User us = new User("Steve");
+            //us.accept(new PanelMakeVisitor());
         }
         if(e.getActionCommand().equals("userCount")){
             System.out.println("\t"+acp.sendTotalUsers());

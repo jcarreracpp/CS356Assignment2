@@ -5,9 +5,7 @@
  */
 public interface ClientHusk {
     
-    public void subscribeFollower(User us);
-        
-    public void notifyFollowers(User us);
+    public void subscribeTo(ClientHusk ck);
     
-    public void notifyFollowers();
+    public void notifyFollowers(String str);
 }

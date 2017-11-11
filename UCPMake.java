@@ -3,6 +3,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -16,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Jorge
  */
-public class UCPMake {
+public class UCPMake implements ActionListener{
     private User user;
 
     public UCPMake(User user) {
@@ -27,7 +29,7 @@ public class UCPMake {
     }
 
     private void displayUserControlPanel() {
-        JFrame window = new JFrame("User Control Panel of: Steve");
+        JFrame window = new JFrame("User Control Panel of: " + user.sendName());
         window.setPreferredSize(new Dimension(400, 500));
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -51,6 +53,7 @@ public class UCPMake {
         gbc.gridy = 0;
         topHalf.add(user.sendUserIDInput(), gbc);
         pb = new PButton().followUser();
+        pb.addActionListener(this);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         gbc.gridx = 2;
@@ -71,6 +74,7 @@ public class UCPMake {
         gbc.gridy = 0;
         botHalf.add(user.sendUserMessage(), gbc);
         pb = new PButton().sendMessage();
+        pb.addActionListener(this);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         gbc.gridx = 2;
@@ -87,4 +91,9 @@ public class UCPMake {
         return backboard;
     }
     
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getActionCommand());
+
+    }
 }
