@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -24,9 +25,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class ACPMake implements ActionListener{
     private AdminControlPanel acp = null;
-    private DefaultListModel<User> userBacklog = new DefaultListModel<>();
-    private DefaultListModel<String> userNames = new DefaultListModel<>();
-    private JList<String> allList;
+
     
     public ACPMake(AdminControlPanel acp){
         if(this.acp == null){
@@ -53,7 +52,7 @@ public class ACPMake implements ActionListener{
         JPanel buttonPanel = buttonPanelGen();
         
         JPanel backboard = new JPanel(new BorderLayout());
-        backboard.add(heirViewer, BorderLayout.WEST);
+        backboard.add(heirViewer);
         backboard.add(buttonPanel, BorderLayout.EAST);
         
         
@@ -61,10 +60,10 @@ public class ACPMake implements ActionListener{
     }
     
     private JScrollPane treeGen() {
-        userBacklog.add(0, new User("Root"));
-        userNames.add(0, userBacklog.get(0).sendName());
-        allList = new JList(userNames);
-        acp.setAllGroupsAndUsers(allList);
+        Driver.userBacklog.add(0, new User("Root"));
+        Driver.userNames.add(0, Driver.userBacklog.get(0).sendName());
+        Driver.allList = new JList(Driver.userNames);
+        acp.setAllGroupsAndUsers(Driver.allList);
         JScrollPane heirViewer = new JScrollPane(acp.sendAllGroupsAndUsers());
         return heirViewer;
     }
@@ -112,36 +111,73 @@ public class ACPMake implements ActionListener{
         
         return backboard;
     }
+    private String heirArchy(String str){
+        int space = 0;
+//        String trim = new String();
+//        trim = str;
+//        trim = trim.trim();
+        space = (str.length() - str.trim().length());
+        str = "";
+        System.out.println("SPACE: "+space);
+        for(int i = 0; i < space; i++){
+            str = str + "  ";
+        }
+        if(space == 0)
+            str = str + "  ";
+        return str;
+    }
+    private boolean alreadyExists(String str){
+        str = str.trim();
+        for(int i = 0; i < Driver.userNames.size(); i++){
+            if(Driver.userNames.get(i).trim().equals(str)){
+                return true;
+            }
+        }
+        return false;
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
         if(e.getActionCommand().equals("addNewUser")){
-            System.out.println("\t"+acp.sendUserIDInput().getText());
-            acp.setUserIDInput("");
+            if(!Driver.allList.isSelectionEmpty() && !acp.sendUserIDInput().getText().equals("")
+                    && !alreadyExists(acp.sendUserIDInput().getText())){
+                Driver.userBacklog.addElement(new User(acp.sendUserIDInput().getText()));
+                String buffer = heirArchy(Driver.allList.getSelectedValue());
+                Driver.userNames.addElement(buffer + acp.sendUserIDInput().getText());
+                acp.setUserIDInput("");
+                Driver.totalUsers++;
+            }
         }
         if(e.getActionCommand().equals("addNewGroup")){
             System.out.println("\t"+acp.sendGroupIDInput().getText());
             acp.setGroupIDInput("");
+            Driver.totalGroups++;
         }
         if(e.getActionCommand().equals("userView")){
-            if(!allList.isSelectionEmpty()){
-                userBacklog.getElementAt(allList.getSelectedIndex()).accept(new PanelMakeVisitor());
+            if(!Driver.allList.isSelectionEmpty()){
+                try{
+                Driver.userBacklog.getElementAt(Driver.allList.getSelectedIndex()).accept(new PanelMakeVisitor());
+                } catch(Exception ex){
+                
+                }
             }
-            //User us = new User("Steve");
-            //us.accept(new PanelMakeVisitor());
         }
         if(e.getActionCommand().equals("userCount")){
-            System.out.println("\t"+acp.sendTotalUsers());
+            JOptionPane.showMessageDialog (null, Driver.totalUsers, "Total Users Count", JOptionPane.INFORMATION_MESSAGE);
         }
         if(e.getActionCommand().equals("groupCount")){
-            System.out.println("\t"+acp.sendTotalGroups());
+            JOptionPane.showMessageDialog (null, Driver.totalGroups, "Total Groups Count", JOptionPane.INFORMATION_MESSAGE);
         }
         if(e.getActionCommand().equals("messageCount")){
-            System.out.println("\t"+acp.sendTotalUsers());
+            JOptionPane.showMessageDialog (null, Driver.totalMessages, "Total Messages", JOptionPane.INFORMATION_MESSAGE);
         }
         if(e.getActionCommand().equals("positivePercent")){
-            System.out.println("\t"+acp.sendTotalGroups());
+            float positPercent = ((float)Driver.positiveMessages / (float)Driver.totalMessages);
+            positPercent = (positPercent*100);
+            if(positPercent != positPercent)
+                positPercent = 0.0f;
+            JOptionPane.showMessageDialog (null, positPercent, "Percent of Positive Messages", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

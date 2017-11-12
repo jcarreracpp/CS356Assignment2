@@ -9,7 +9,16 @@
  * @author Jorge
  */
 public class Group implements GroupHusk{
-
+    private String name;
+    
+    public Group(String str){
+        this.name = name;
+    }
+    
+    public String sendName(){
+        return name;
+    }
+    
     @Override
     public void subscribeTo(ClientHusk ck) {
         throw new UnsupportedOperationException("Groups cannot subscribe!");

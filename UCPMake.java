@@ -91,9 +91,46 @@ public class UCPMake implements ActionListener{
         return backboard;
     }
     
+    private boolean userNameExists(String str){
+        str = str.trim();
+        for(int i = 0; i < Driver.userNames.size(); i++){
+            if(str.equals(Driver.userNames.get(i))){
+                return true;
+            }
+        }
+        return false;
+    }
+    private int findID(String str){
+        str = str.trim();
+        for(int i = 0; i < Driver.userNames.size(); i++){
+            if(str.equals(Driver.userNames.get(i))){
+                return i;
+            }
+        }
+        return 0;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
+        
+        if(e.getActionCommand().equals("follow")){
+            int iD = 0;
 
+            if(userNameExists(user.sendUserIDInput().getText())){
+                iD = findID(user.sendUserIDInput().getText());
+                
+                if(iD != 0){
+                    user.follow(Driver.userBacklog.elementAt(iD));
+
+                }
+            }
+            user.sendUserIDInput().setText("");
+        }
+        
+        if(e.getActionCommand().equals("sendMsg")){
+            user.notifyFollowers(user.sendUserMessage().getText());
+            user.sendUserMessage().setText("");
+        }
     }
 }

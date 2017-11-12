@@ -40,8 +40,10 @@ class User implements Panelize, UserHusk{
     @Override
     public void notifyFollowers(String str) {
         for(int i = 0; i < listOfFollowed.size(); i++){
-            listOfFollowed.get(i).addToFeedText(str + "\n");
+            listOfFollowed.get(i).addToFeedText(this, str);
         }
+        addToFeedText(this, str);
+        Driver.totalMessages++;
     }
     
     public JTextField sendUserIDInput(){
@@ -60,7 +62,7 @@ class User implements Panelize, UserHusk{
         return feed;
     }
     
-    private List<User> getFollowed(){
+    public List<User> getFollowed(){
         return listOfFollowed;
     }
     
@@ -72,6 +74,25 @@ class User implements Panelize, UserHusk{
         getFollowed(us).add(this);
     }
     
+    public void follow(User us){
+        boolean escape = false;
+        for(int i = 0; i < listOfFollowing.size(); i++){
+            if(us == listOfFollowing.get(i)){
+                escape = true;
+            }
+        }
+        if(name.equals(us.sendName())){
+            escape = true;
+        }
+        
+        if(!escape){
+            System.out.println("ARRIED");
+            listOfFollowing.add(us);
+            addToFollowingText(us.sendName());
+            addToFollowed(us);
+        }
+    }
+    
     public String sendName(){
         return name;
     }
@@ -80,8 +101,8 @@ class User implements Panelize, UserHusk{
         following.append(str + "\n");
     }
     
-    public void addToFeedText(String str){
-        feed.append(str + "\n");
+    public void addToFeedText(User us, String str){
+        feed.append(us.sendName() + ": " + str + "\n");
     }
 
 }

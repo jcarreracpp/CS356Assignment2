@@ -22,9 +22,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class AdminControlPanel{
     private static AdminControlPanel acp = null;
-    private int totalUsers = 0;
-    private int totalGroups = 0;
-    private int totalMessages = 0;
+
     private float percentPositMsg = 0;
     private JList allGroupsAndUsers;
     private JTextField userIDInput = new JTextField();
@@ -60,17 +58,17 @@ public class AdminControlPanel{
         return groupIDInput;
     }
     
-    public int sendTotalUsers(){
-        return totalUsers;
-    }
-    
-    public int sendTotalGroups(){
-        return totalGroups;
-    }
-    
-    public int sentTotalMessages(){
-        return totalMessages;
-    }
+//    public int sendTotalUsers(){
+//        return totalUsers;
+//    }
+//    
+//    public int sendTotalGroups(){
+//        return totalGroups;
+//    }
+//    
+//    public int sentTotalMessages(){
+//        return totalMessages;
+//    }
     
     public float sendPercentPositMsg(){
         return percentPositMsg;
@@ -88,4 +86,24 @@ public class AdminControlPanel{
         groupIDInput.setText(str);
     }
     
+//    public void incrementUser(){
+//        totalUsers++;
+//    }
+//    
+//    public void incrementGroups(){
+//        totalGroups++;
+//    }
+//    
+//    public void incrementMessages(){
+//        totalMessages++;
+//    }
+//    
+//    public void incrementPositive(){
+//        positiveMessages++;
+//    }
+//    
+//    public float calcPosit(){
+//        percentPositMsg = (float)positiveMessages / (float) totalMessages;
+//        return (percentPositMsg*100.0f);
+//    }
 }
