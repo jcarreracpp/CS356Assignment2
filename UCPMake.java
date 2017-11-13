@@ -1,4 +1,3 @@
-
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,15 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
  * @author Jorge
+ * 
+ * Makes the GUI aspect of the user control panel and handles following list,
+ * feed, adding users to follow, and sending messages.
  */
 public class UCPMake implements ActionListener{
     private User user;
@@ -92,18 +88,25 @@ public class UCPMake implements ActionListener{
     }
     
     private boolean userNameExists(String str){
-        str = str.trim();
+        String temp = str.trim();
+        boolean result = false;
         for(int i = 0; i < Driver.userNames.size(); i++){
-            if(str.equals(Driver.userNames.get(i))){
-                return true;
+            if(temp.equals(Driver.userNames.get(i).trim())){
+                result = true;
             }
         }
-        return false;
+        return result;
+    }
+    private void isPositive(String str) {
+        if(str.toLowerCase().indexOf("great") >= 0 || str.toLowerCase().indexOf("good") >= 0
+                || str.toLowerCase().indexOf("nice") >= 0){
+            Driver.positiveMessages++;
+        }
     }
     private int findID(String str){
         str = str.trim();
         for(int i = 0; i < Driver.userNames.size(); i++){
-            if(str.equals(Driver.userNames.get(i))){
+            if(str.equals(Driver.userNames.get(i).trim())){
                 return i;
             }
         }
@@ -112,7 +115,6 @@ public class UCPMake implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getActionCommand());
         
         if(e.getActionCommand().equals("follow")){
             int iD = 0;
@@ -121,15 +123,16 @@ public class UCPMake implements ActionListener{
                 iD = findID(user.sendUserIDInput().getText());
                 
                 if(iD != 0){
-                    user.follow(Driver.userBacklog.elementAt(iD));
+                    user.follow((User)Driver.userBacklog.elementAt(iD));
 
                 }
+                user.sendUserIDInput().setText("");
             }
-            user.sendUserIDInput().setText("");
         }
         
         if(e.getActionCommand().equals("sendMsg")){
             user.notifyFollowers(user.sendUserMessage().getText());
+            isPositive(user.sendUserMessage().getText());
             user.sendUserMessage().setText("");
         }
     }

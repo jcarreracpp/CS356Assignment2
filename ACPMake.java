@@ -1,27 +1,19 @@
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
  * @author Jorge
+ * 
+ * Makes the GUI aspect of the admin control panel and handles the organization
+ * of the element display list on the left.
  */
 public class ACPMake implements ActionListener{
     private AdminControlPanel acp = null;
@@ -60,8 +52,8 @@ public class ACPMake implements ActionListener{
     }
     
     private JScrollPane treeGen() {
-        Driver.userBacklog.add(0, new User("Root"));
-        Driver.userNames.add(0, Driver.userBacklog.get(0).sendName());
+        Driver.userBacklog.add(0, new Group("Root"));
+        Driver.userNames.add(0, ((Group)Driver.userBacklog.get(0)).sendName());
         Driver.allList = new JList(Driver.userNames);
         acp.setAllGroupsAndUsers(Driver.allList);
         JScrollPane heirViewer = new JScrollPane(acp.sendAllGroupsAndUsers());
@@ -92,10 +84,8 @@ public class ACPMake implements ActionListener{
         uv.addActionListener(this);
 
         addUserStrip.add(acp.sendUserIDInput());
-                //userIDInput.setColumns(10);
         addUserStrip.add(au);
         addGroupStrip.add(acp.sendGroupIDInput());
-                //groupIDInput.setColumns(10);
         addGroupStrip.add(ag);
         showGUStrip.add(su);
         showGUStrip.add(sg);
@@ -111,25 +101,40 @@ public class ACPMake implements ActionListener{
         
         return backboard;
     }
-    private String heirArchy(String str){
+    private String heirArchy(String str, boolean isthisagroup){
         int space = 0;
-//        String trim = new String();
-//        trim = str;
-//        trim = trim.trim();
+
         space = (str.length() - str.trim().length());
-        str = "";
-        System.out.println("SPACE: "+space);
-        for(int i = 0; i < space; i++){
-            str = str + "  ";
-        }
+        space = space/2;
         if(space == 0)
+            space = 1;
+        str = "";
+
+        if(Driver.allList.getSelectedIndex() == 0){
+            str = "  ";
+
+        }else if(!Driver.userBacklog.get(Driver.allList.getSelectedIndex()).labeledGroup()){
+            for(int i = 0; i < space; i++){
+                str = str + "  ";
+            }
+
+        }else{
+            for(int i = 0; i < space; i++){
+                str = str + "  ";
+            }
             str = str + "  ";
+
+        }
+        if(isthisagroup){
+            str = str + "GROUP: ";
+        }
+            
         return str;
     }
     private boolean alreadyExists(String str){
         str = str.trim();
         for(int i = 0; i < Driver.userNames.size(); i++){
-            if(Driver.userNames.get(i).trim().equals(str)){
+            if(Driver.userNames.get(i).trim().equals(str) || Driver.userNames.get(i).trim().equals("GROUP: " + str)){
                 return true;
             }
         }
@@ -138,26 +143,31 @@ public class ACPMake implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getActionCommand());
+        
         if(e.getActionCommand().equals("addNewUser")){
             if(!Driver.allList.isSelectionEmpty() && !acp.sendUserIDInput().getText().equals("")
                     && !alreadyExists(acp.sendUserIDInput().getText())){
-                Driver.userBacklog.addElement(new User(acp.sendUserIDInput().getText()));
-                String buffer = heirArchy(Driver.allList.getSelectedValue());
-                Driver.userNames.addElement(buffer + acp.sendUserIDInput().getText());
+                Driver.userBacklog.add(Driver.allList.getSelectedIndex()+1, new User(acp.sendUserIDInput().getText()));
+                String buffer = heirArchy(Driver.allList.getSelectedValue(), false);
+                Driver.userNames.add(Driver.allList.getSelectedIndex()+1, buffer + acp.sendUserIDInput().getText());
                 acp.setUserIDInput("");
                 Driver.totalUsers++;
             }
         }
         if(e.getActionCommand().equals("addNewGroup")){
-            System.out.println("\t"+acp.sendGroupIDInput().getText());
-            acp.setGroupIDInput("");
-            Driver.totalGroups++;
+            if(!Driver.allList.isSelectionEmpty() && !acp.sendGroupIDInput().getText().equals("")
+                    && !alreadyExists(acp.sendGroupIDInput().getText())){
+                Driver.userBacklog.addElement(new Group(acp.sendGroupIDInput().getText()));
+                String buffer = heirArchy(Driver.allList.getSelectedValue(), true);
+                Driver.userNames.addElement(buffer + acp.sendGroupIDInput().getText());
+                acp.setGroupIDInput("");
+                Driver.totalGroups++;
+            }
         }
         if(e.getActionCommand().equals("userView")){
             if(!Driver.allList.isSelectionEmpty()){
                 try{
-                Driver.userBacklog.getElementAt(Driver.allList.getSelectedIndex()).accept(new PanelMakeVisitor());
+                ((User)Driver.userBacklog.getElementAt(Driver.allList.getSelectedIndex())).accept(new PanelMakeVisitor());
                 } catch(Exception ex){
                 
                 }
@@ -177,7 +187,7 @@ public class ACPMake implements ActionListener{
             positPercent = (positPercent*100);
             if(positPercent != positPercent)
                 positPercent = 0.0f;
-            JOptionPane.showMessageDialog (null, positPercent, "Percent of Positive Messages", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog (null, (int)positPercent + "%", "Percent of Positive Messages", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

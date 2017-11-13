@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-
 /**
- *
  * @author Jorge
+ * 
+ * User object. Each instance of this represents a single user with their own
+ * list of people followed/followers etc.
  */
 class User implements Panelize, UserHusk{
     private String name;
@@ -44,6 +45,11 @@ class User implements Panelize, UserHusk{
         }
         addToFeedText(this, str);
         Driver.totalMessages++;
+    }
+    
+    @Override
+    public boolean labeledGroup(){
+        return false;
     }
     
     public JTextField sendUserIDInput(){

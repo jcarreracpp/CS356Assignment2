@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
  * @author Jorge
+ * 
+ * Group object. Each instance of this represents a group under-which more users
+ * and groups can further be organized. 
  */
 public class Group implements GroupHusk{
     private String name;
     
-    public Group(String str){
+    public Group(String name){
         this.name = name;
     }
     
@@ -27,6 +23,11 @@ public class Group implements GroupHusk{
     @Override
     public void notifyFollowers(String str) {
         throw new UnsupportedOperationException("Groups cannot message!");
+    }
+    
+    @Override
+    public boolean labeledGroup(){
+        return true;
     }
     
 }

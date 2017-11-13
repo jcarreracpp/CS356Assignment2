@@ -1,10 +1,11 @@
-
 import javax.swing.JButton;
 
 
 /**
- *
  * @author Jorge
+ * 
+ * Holds the button configurations for the panels, only requires that class to
+ * have actionlisteners for each button.
  */
 public class PButton extends JButton{
     

@@ -1,7 +1,7 @@
-
 /**
- *
  * @author Jorge
+ * 
+ * Interface for the user object that extends ClientHusk interface.
  */
 public interface UserHusk extends ClientHusk{
     
