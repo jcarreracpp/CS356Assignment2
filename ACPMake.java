@@ -75,6 +75,8 @@ public class ACPMake implements ActionListener{
         PButton sm = new PButton().showMessages();
         PButton sp = new PButton().showPercent();
         PButton uv = new PButton().userView();
+        PButton vi = new PButton().verifyIDs();
+        PButton lu = new PButton().latestUser();
         au.addActionListener(this);
         ag.addActionListener(this);
         su.addActionListener(this);
@@ -82,6 +84,8 @@ public class ACPMake implements ActionListener{
         sm.addActionListener(this);
         sp.addActionListener(this);
         uv.addActionListener(this);
+        vi.addActionListener(this);
+        lu.addActionListener(this);
 
         addUserStrip.add(acp.sendUserIDInput());
         addUserStrip.add(au);
@@ -94,7 +98,9 @@ public class ACPMake implements ActionListener{
         backboard.add(addUserStrip);
         backboard.add(addGroupStrip);
         backboard.add(uv);
+        empty0.add(vi);
         backboard.add(empty0);
+        empty1.add(lu);
         backboard.add(empty1);
         backboard.add(showGUStrip);
         backboard.add(showMsgPStrip);
@@ -168,6 +174,7 @@ public class ACPMake implements ActionListener{
             if(!Driver.allList.isSelectionEmpty()){
                 try{
                 ((User)Driver.userBacklog.getElementAt(Driver.allList.getSelectedIndex())).accept(new PanelMakeVisitor());
+                    Driver.userBacklog.getElementAt(Driver.allList.getSelectedIndex()).printCreationTime();
                 } catch(Exception ex){
                 
                 }
@@ -188,6 +195,39 @@ public class ACPMake implements ActionListener{
             if(positPercent != positPercent)
                 positPercent = 0.0f;
             JOptionPane.showMessageDialog (null, (int)positPercent + "%", "Percent of Positive Messages", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if(e.getActionCommand().equals("verifyID")){
+            boolean incorrect = false;
+            for(int i = 0; i < Driver.userBacklog.getSize(); i++){
+                if(Driver.userBacklog.getElementAt(i).sendName().indexOf(" ") != -1){
+                    incorrect = true;
+                }
+            }
+            
+            if(incorrect){
+                JOptionPane.showMessageDialog (null, "Group/User IDs are not valid!", "Verify ID", JOptionPane.ERROR_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog (null, "Group/User IDs are valid.", "Verify ID", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        if(e.getActionCommand().equals("lastUser")){
+            ClientHusk temp = null;
+            for(int i = 0; i < Driver.userBacklog.getSize(); i++){
+                //try{
+                    if(temp == null){
+                        temp = Driver.userBacklog.get(i);
+                    }else if((temp).getLastUpdated() < (Driver.userBacklog.get(i)).getLastUpdated()){
+                        temp = Driver.userBacklog.get(i);
+                    }
+                //}catch(Exception ex){}
+            }
+            
+            if(temp == Driver.userBacklog.get(0) || temp == null){
+                JOptionPane.showMessageDialog (null, "Error, no users exist or no one has posted!", "Latest updated User", JOptionPane.ERROR_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog (null, temp.sendName() + " is the latest updated user.", "Latest updated User", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 }

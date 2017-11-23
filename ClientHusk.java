@@ -10,4 +10,10 @@ public interface ClientHusk {
     public void notifyFollowers(String str);
     
     public boolean labeledGroup();
+    
+    public String sendName();
+    
+    public void printCreationTime();
+
+    public long getLastUpdated();
 }

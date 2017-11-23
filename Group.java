@@ -1,3 +1,7 @@
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author Jorge
  * 
@@ -6,11 +10,13 @@
  */
 public class Group implements GroupHusk{
     private String name;
+    private long creationTime = System.currentTimeMillis();
     
     public Group(String name){
         this.name = name;
     }
     
+    @Override
     public String sendName(){
         return name;
     }
@@ -30,4 +36,14 @@ public class Group implements GroupHusk{
         return true;
     }
     
+    public void printCreationTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");    
+        Date date = new Date(creationTime);
+        System.out.println(sdf.format(date));
+    }
+
+    @Override
+    public long getLastUpdated() {
+        return 0;
+    }
 }

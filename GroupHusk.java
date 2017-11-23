@@ -10,4 +10,7 @@ public interface GroupHusk extends ClientHusk{
   
     @Override
     public void notifyFollowers(String str);
+    
+    @Override
+    public String sendName();
 }

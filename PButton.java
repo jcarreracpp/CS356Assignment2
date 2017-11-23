@@ -64,4 +64,16 @@ public class PButton extends JButton{
         setActionCommand("sendMsg");
         return this;
     }
+    
+    public PButton verifyIDs(){
+        setText("Verify Users and Groups IDs");
+        setActionCommand("verifyID");
+        return this;
+    }
+
+    public PButton latestUser() {
+        setText("Find latest updated User.");
+        setActionCommand("lastUser");
+        return this;
+    }
 }

@@ -1,6 +1,8 @@
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -12,6 +14,8 @@ import javax.swing.JTextField;
  */
 class User implements Panelize, UserHusk{
     private String name;
+    private long creationTime = System.currentTimeMillis();
+    private long lastUpdated  = 0;
     private JTextField userIDInput = new JTextField();
     private JTextField userMessage = new JTextField();
     private JTextArea following = new JTextArea();
@@ -42,7 +46,9 @@ class User implements Panelize, UserHusk{
     public void notifyFollowers(String str) {
         for(int i = 0; i < listOfFollowed.size(); i++){
             listOfFollowed.get(i).addToFeedText(this, str);
+            listOfFollowed.get(i).setUpdated(System.currentTimeMillis());
         }
+        lastUpdated = System.currentTimeMillis();
         addToFeedText(this, str);
         Driver.totalMessages++;
     }
@@ -80,6 +86,14 @@ class User implements Panelize, UserHusk{
         getFollowed(us).add(this);
     }
     
+    public void setUpdated(long time){
+        lastUpdated = time;
+    }
+    
+    public long getLastUpdated(){
+        return lastUpdated;
+    }
+    
     public void follow(User us){
         boolean escape = false;
         for(int i = 0; i < listOfFollowing.size(); i++){
@@ -99,6 +113,7 @@ class User implements Panelize, UserHusk{
         }
     }
     
+    @Override
     public String sendName(){
         return name;
     }
@@ -111,4 +126,10 @@ class User implements Panelize, UserHusk{
         feed.append(us.sendName() + ": " + str + "\n");
     }
 
+    public void printCreationTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");    
+        Date date = new Date(creationTime);
+        System.out.println(sdf.format(date));
+    }
+    
 }
